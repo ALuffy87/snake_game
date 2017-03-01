@@ -86,7 +86,7 @@ def gameLoop():
         lead_x += lead_x_change
         lead_y += lead_y_change
 
-        gameDisplay.fill(pink) # background screen
+        gameDisplay.fill(white) # background screen
         pygame.draw.rect(gameDisplay, red, [randAppleX, randAppleY, block_size,block_size])
 
         snakeHead = []
