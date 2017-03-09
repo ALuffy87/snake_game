@@ -21,6 +21,8 @@ display_height = 600  # screen size for game, height
 gameDisplay = pygame.display.set_mode((display_width, display_height))  # game display is the surface
 pygame.display.set_caption('Slither')  # title
 
+#img = pygame.image.load('snakehead.png') # adding snake head
+
 clock = pygame.time.Clock()  # pygame clock
 
 block_size = 20  # snake block size, thickness 20px x 20px
@@ -30,7 +32,10 @@ font = pygame.font.SysFont(None, 25)  # defining font size for exit screen
 
 
 def snake(block_size, snakeList):
-    for XnY in snakeList:
+
+    #gameDisplay.blit(img, (snakelist [-1][0], snakelist [-1][1]))
+
+    for XnY in snakeList[:-1]:
         pygame.draw.rect(gameDisplay, blue, [XnY[0], XnY[1], block_size, block_size])
 
 
