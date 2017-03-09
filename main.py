@@ -13,27 +13,43 @@ blue = (30, 144, 255)  # dodger blue (colour of snake)
 pink = (255, 105, 180)  # hot pink (colour of game background)
 # pink = (255, 182, 193) # light pink
 
-
-
 display_width = 800  # screen size for game, width
 display_height = 600  # screen size for game, height
 
 gameDisplay = pygame.display.set_mode((display_width, display_height))  # game display is the surface
 pygame.display.set_caption('Slither')  # title
 
-#img = pygame.image.load('snakehead.png') # adding snake head
+img = pygame.image.load('snakehead.png') # adding snake head
+
 
 clock = pygame.time.Clock()  # pygame clock
 
 block_size = 20  # snake block size, thickness 20px x 20px
 FPS = 20  # frames per second
 
+direction =  "right"
+
 font = pygame.font.SysFont(None, 25)  # defining font size for exit screen
 
 
 def snake(block_size, snakeList):
 
-    #gameDisplay.blit(img, (snakelist [-1][0], snakelist [-1][1]))
+    if direction == "right": #direction of head to position to body
+        head = pygame.transform.rotate(img, 270) # facing right direction from point 0 (270 degrees)
+
+    if direction == "left":  # direction of head to position to body
+        head = pygame.transform.rotate(img, 90)  # facing left direction from point 0 (90 degrees)
+
+    if direction == "up": #direction of head to position to body
+        head = img #no change
+
+    if direction == "down": #direction of head to position to body
+        head = pygame.transform.rotate(img, 180) # facing down direction from point 0 (180 degrees)
+
+
+
+
+    gameDisplay.blit(head, (snakeList [-1][0], snakeList [-1][1])) # adding tail to the snake from the head, once apple eaten
 
     for XnY in snakeList[:-1]:
         pygame.draw.rect(gameDisplay, blue, [XnY[0], XnY[1], block_size, block_size])
@@ -54,13 +70,14 @@ def message_to_screen(msg, color):  # displayed game over text
 
 
 def gameLoop():
+    global direction
     gameExit = False
     gameOver = False
 
     lead_x = display_width / 2
     lead_y = display_height / 2
 
-    lead_x_change = 0
+    lead_x_change = 10 # make sure the snake is moving along the x direction when starting game
     lead_y_change = 0
 
     snakeList = []
@@ -93,15 +110,19 @@ def gameLoop():
                 gameExit = True
             if event.type == pygame.KEYDOWN:  # event type
                 if event.key == pygame.K_LEFT:
+                    direction = "left" # defining direction
                     lead_x_change = -block_size
                     lead_y_change = 0
                 elif event.key == pygame.K_RIGHT:
+                    direction = "right"  # defining direction
                     lead_x_change = block_size
                     lead_y_change = 0
                 elif event.key == pygame.K_UP:
+                    direction = "up"  # defining direction
                     lead_y_change = -block_size
                     lead_x_change = 0
                 elif event.key == pygame.K_DOWN:
+                    direction = "down"  # defining direction
                     lead_y_change = block_size
                     lead_x_change = 0
 
