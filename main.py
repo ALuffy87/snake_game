@@ -20,7 +20,7 @@ gameDisplay = pygame.display.set_mode((display_width, display_height))  # game d
 pygame.display.set_caption('Slither')  # title
 
 img = pygame.image.load('snakehead.png') # adding snake head
-
+#img = pygame.image.load('trees/tree.png')
 
 clock = pygame.time.Clock()  # pygame clock
 
@@ -29,8 +29,51 @@ FPS = 20  # frames per second
 
 direction =  "right"
 
-font = pygame.font.SysFont(None, 25)  # defining font size for exit screen
+smallfont = pygame.font.SysFont("monospace", 15)  # defining font size for exit screen
+mediumfont = pygame.font.SysFont("monospace", 30)
+largefont = pygame.font.SysFont("monospace", 50)
 
+def game_intro(): # introduction page to game
+
+    intro = True
+
+    while intro:
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_c:
+                    intro = False
+                if event.key == pygame. K_q:
+                    pygame.quit()
+                    quit()
+
+
+        gameDisplay.fill(white)
+        message_to_screen("Welcome to my snake game",
+                          pink,
+                          -50,
+                          "large")
+        message_to_screen("The objective of the game is to eat as many red apples as possible",
+                          black,
+                          -20)
+        message_to_screen("The more apples you eat, the longer you get because you are greedy!",
+                          black,
+                          10)
+        message_to_screen("If you run into yourself, or the edges, you die, loser!",
+                          black,
+                          50)
+        message_to_screen("Press C to play or Q to quit.",
+                          black,
+                          180)
+
+        pygame.display.update()
+        clock.tick(15)
+
+#----------------------------------------------------------------------------------------------------------------
 
 def snake(block_size, snakeList):
 
@@ -55,22 +98,32 @@ def snake(block_size, snakeList):
         pygame.draw.rect(gameDisplay, blue, [XnY[0], XnY[1], block_size, block_size])
 
 
-def text_objects(text, color):
-    textSurface = font.render(text, True, color)
+def text_objects(text, color, size):
+    if size == "small":
+        textSurface = smallfont.render(text, True, color) # defining small font to screen
+    elif size == "medium":
+        textSurface = mediumfont.render(text, True, color) # defining medium font to screen
+    elif size == "large":
+        textSurface = largefont.render(text, True, color) # defining large font to screen
+
+
+
     return textSurface, textSurface.get_rect()
 
 
-def message_to_screen(msg, color):  # displayed game over text
-    textSurf, textRect = text_objects(msg, color)  # tuple
 
-    # screen_text = font.render(msg, True, color)
-    # gameDisplay.blit(screen_text, [display_width/2, display_height/2])
-    textRect.center = (display_width / 2), (display_height / 2)
+
+
+def message_to_screen(msg, color, y_displace=0, size = "small"):  # displayed game over text
+    textSurf, textRect = text_objects(msg, color, size)  # tuple
+    textRect.center = (display_width / 2), (display_height / 2)+y_displace
     gameDisplay.blit(textSurf, textRect)
 
 
 def gameLoop():
     global direction
+
+    direction = 'right' #snakehead always starts facing right
     gameExit = False
     gameOver = False
 
@@ -89,8 +142,15 @@ def gameLoop():
     while not gameExit:
 
         while gameOver == True:
-            gameDisplay.fill(blue)  # game over screen
-            message_to_screen("Game over, press C to play again or Q to quit", white)  # displays red message on screen
+            gameDisplay.fill(pink)  # game over screen
+            message_to_screen("Game over",
+                              white,
+                              y_displace=-50,
+                              size="large")  # displays white message on blue background screen
+
+            message_to_screen("Press C to play again or Q to quit",
+                              black,
+                              50) # message underneath on game over screen
             pygame.display.update()
 
             for event in pygame.event.get():
@@ -178,7 +238,7 @@ def gameLoop():
     pygame.quit()  # quits pygame and uninitialised pygame
     quit()  # exit python
 
-
+game_intro()
 gameLoop()
 
 # develop test line
