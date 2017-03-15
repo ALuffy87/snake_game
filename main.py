@@ -40,6 +40,14 @@ largefont = pygame.font.SysFont("monospace", 50)
 def pause(): # adding a pause option
 
     paused = True
+    message_to_screen("Game paused",
+                      black,
+                      -50,
+                      "large")
+    message_to_screen("Press C to continue or Q to quit",
+                      black,
+                      50)
+    pygame.display.update()
 
     while paused:
         for event in pygame.event.get():
@@ -55,15 +63,8 @@ def pause(): # adding a pause option
                     pygame.quit()
                     quit()
 
-        gameDisplay.fill(white)
-        message_to_screen("Game paused",
-                          pink,
-                          -50,
-                          "large")
-        message_to_screen("Press C to continue or Q to quit",
-                          black,
-                          50)
-        pygame.display.update()
+        #gameDisplay.fill(white)
+
         clock.tick(5)
 
 
@@ -189,8 +190,7 @@ def gameLoop():
 
     while not gameExit:
 
-        while gameOver == True:
-            gameDisplay.fill(pink)  # game over screen
+        if gameOver == True:
             message_to_screen("Game over",
                               white,
                               y_displace=-50,
@@ -198,8 +198,12 @@ def gameLoop():
 
             message_to_screen("Press C to play again or Q to quit",
                               black,
-                              50) # message underneath on game over screen
+                              50)  # message underneath on game over screen
             pygame.display.update()
+
+        while gameOver == True:
+            #gameDisplay.fill(pink)  # game over screen
+
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:  # event type, pressing red exit box to exit shell
