@@ -37,8 +37,41 @@ smallfont = pygame.font.SysFont("monospace", 15)  # defining font size for exit 
 mediumfont = pygame.font.SysFont("monospace", 30)
 largefont = pygame.font.SysFont("monospace", 50)
 
+def pause(): # adding a pause option
+
+    paused = True
+
+    while paused:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_c:
+                    paused = False
+
+                elif event.key == pygame.K_q:
+                    pygame.quit()
+                    quit()
+
+        gameDisplay.fill(white)
+        message_to_screen("Game paused",
+                          pink,
+                          -50,
+                          "large")
+        message_to_screen("Press C to continue or Q to quit",
+                          black,
+                          50)
+        pygame.display.update()
+        clock.tick(5)
+
+
+
+
+
 def score(score): # adding a score
-    text = mediumfont.render("score: "+str(score), True, white) #adding a boolean True to calculate the 
+    text = mediumfont.render("score: "+str(score), True, white) #adding a boolean True to calculate the
     gameDisplay.blit(text, [0,0])
 
 def randAppleGen():
@@ -200,6 +233,9 @@ def gameLoop():
                     direction = "down"  # defining direction
                     lead_y_change = block_size
                     lead_x_change = 0
+
+                elif event.key == pygame.K_p:
+                    pause()
 
         if lead_x >= display_width or lead_x < 0 or lead_y >= display_height or lead_y < 0:
             gameOver = True
